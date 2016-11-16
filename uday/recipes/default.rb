@@ -13,15 +13,25 @@
 #	action [:enable, :start]
 # 
 #
-node['uday']['pakage'].each do |sai|
- package sai do
+#node['uday']['pakage'].each do |sai|
+package "httpd" do
   action :install
  end
 
-end
+
 
 service "httpd" do 
-	action :restart
+	action :start
+end
+
+time = Time.now
+
+template "/var/www/html/index.html" do
+	source "index.html.erb"
+	variables(
+	:variable => time
+)
+notifies :restart, "service[httpd]"
 end
 
 file '/opt/tools/hello.txt' do
@@ -32,20 +42,20 @@ file '/opt/tools/hello.txt' do
 end
 
 
-directory '/opt/tools' do
-  owner 'root'
-  group 'root'
-  mode '0755'
-  action :create
-end
+#directory '/opt/tools' do
+#  owner 'root'
+#  group 'root'
+#  mode '0755'
+#  action :create
+#end
 
-execute 'hello' do
- command 'ls -l /etc >  /tmp/this.txt'
-end
+#execute 'hello' do
+# command 'ls -l /etc >  /tmp/this.txt'
+#end
 
-git '/var/www/html' do
-  repository 'https://github.com/ls457/php_site.git'
-  revision 'master'
-  action :sync
+#git '/var/www/html' do
+# repository 'https://github.com/ls457/php_site.git'
+#  revision 'master'
+#  action :sync
 
-end
+# end

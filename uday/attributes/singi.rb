@@ -1,1 +1,1 @@
-default['uday']['pakage'] = ['httpd','php','mysql','git']
+default['uday']['pakage'] = ['httpd','git']
